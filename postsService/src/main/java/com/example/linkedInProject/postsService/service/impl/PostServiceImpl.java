@@ -1,4 +1,4 @@
-package com.example.linkedInProject.postsService.repository.impl;
+package com.example.linkedInProject.postsService.service.impl;
 
 import com.example.linkedInProject.postsService.dto.PostCreateRequestDto;
 import com.example.linkedInProject.postsService.dto.PostDto;
