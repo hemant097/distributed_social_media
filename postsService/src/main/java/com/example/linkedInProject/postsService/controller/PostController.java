@@ -27,7 +27,7 @@ public class PostController {
 
     @GetMapping("/{postId}")
     public ResponseEntity<PostDto> getPostById(@PathVariable Long postId
-//            ,@RequestHeader("X-User-Id") Long userId
+//            ,@RequestHeader("X-User-Id") Long userId // wherever we need userId, we have to do this, which is cumbersome
     ){
 //        System.out.println("user id is "+userId);
         System.out.println("user id -> "+ AuthContextHolder.getCurrentUserId());

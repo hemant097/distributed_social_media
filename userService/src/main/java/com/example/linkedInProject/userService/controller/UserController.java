@@ -1,5 +1,6 @@
 package com.example.linkedInProject.userService.controller;
 
+import com.example.linkedInProject.userService.dto.AuthResponse;
 import com.example.linkedInProject.userService.dto.LoginRequestDto;
 import com.example.linkedInProject.userService.dto.SignupRequestDto;
 import com.example.linkedInProject.userService.dto.UserDto;
@@ -26,9 +27,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequest){
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequestDto loginRequest){
         String token = authService.login(loginRequest);
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(new AuthResponse(token));
     }
 
 }
