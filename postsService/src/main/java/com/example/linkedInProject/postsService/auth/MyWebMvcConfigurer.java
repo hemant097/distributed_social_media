@@ -13,7 +13,7 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer  {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //adding our custom request interceptor to interceptor registory
+        //adding our custom request interceptor to interceptor registry
         registry.addInterceptor(myRequestInterceptor);
         WebMvcConfigurer.super.addInterceptors(registry);
     }

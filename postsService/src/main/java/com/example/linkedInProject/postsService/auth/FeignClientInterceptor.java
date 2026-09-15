@@ -13,6 +13,6 @@ public class FeignClientInterceptor implements RequestInterceptor {
         if(userId!=null)
             template.header("X-User-Id",userId.toString());
 
-        //now we don't 've to pass the id in method parameters, while calling the Feign client
+        //now we can choose to pass the id in method parameters, while calling the Feign client
     }
 }

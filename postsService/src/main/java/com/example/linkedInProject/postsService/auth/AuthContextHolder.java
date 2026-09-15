@@ -2,6 +2,7 @@ package com.example.linkedInProject.postsService.auth;
 
 public class AuthContextHolder {
 
+    //using ThreadLocal provides better concurrency handling, instead of using only static final Long (which'll hamper with multiple concurrent requests)
     private static final ThreadLocal<Long> currentUserId = new ThreadLocal<>();
 
     public static Long getCurrentUserId(){return currentUserId.get();}

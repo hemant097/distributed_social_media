@@ -21,7 +21,8 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<PostDto> createPost(@RequestBody PostCreateRequestDto postCreateRequestDto){
-        PostDto postDto = postService.createPost(postCreateRequestDto,1L);
+        Long currentUserId = AuthContextHolder.getCurrentUserId();
+        PostDto postDto = postService.createPost(postCreateRequestDto,currentUserId);
         return new ResponseEntity<>(postDto, HttpStatus.CREATED);
     }
 
