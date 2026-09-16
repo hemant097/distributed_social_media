@@ -25,4 +25,16 @@ public class ConnectionController {
         return ResponseEntity.ok(connectionService.getFirstDegreeConnections(userId));
     }
 
+    @GetMapping("/{userid}/second-degree")
+    public ResponseEntity<List<Person>> getSecondDegreeConnections(@PathVariable("userid") Long userId){
+        log.info("User id is: {}",userId);
+        return ResponseEntity.ok(connectionService.getSecondDegreeConnections(userId));
+    }
+
+    @GetMapping("/{userid}/third-degree")
+    public ResponseEntity<List<Person>> getThirdDegreeConnections(@PathVariable("userid") Long userId){
+        log.info("User id is: {}",userId);
+        return ResponseEntity.ok(connectionService.getThirdDegreeConnections(userId));
+    }
+
 }

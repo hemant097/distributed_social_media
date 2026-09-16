@@ -7,4 +7,9 @@ import java.util.List;
 public interface ConnectionService {
 
     List<Person> getFirstDegreeConnections(Long userId);
+
+    List<Person> getSecondDegreeConnections(Long userId);
+
+    List<Person> getThirdDegreeConnections(Long userId);
+
 }

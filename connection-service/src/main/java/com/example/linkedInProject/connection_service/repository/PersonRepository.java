@@ -18,4 +18,9 @@ public interface PersonRepository extends Neo4jRepository<Person,Long> {
             return personB
             """)
     List<Person> getFirstDegreeConnections(@Param("userId") Long userID);
+
+    List<Person> getSecondDegreeConnections(@Param("userId") Long userID);
+
+    List<Person> getThirdDegreeConnections(@Param("userId") Long userID);
+
 }

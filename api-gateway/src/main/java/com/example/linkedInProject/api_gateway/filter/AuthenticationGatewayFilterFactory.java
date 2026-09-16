@@ -52,11 +52,11 @@ public class AuthenticationGatewayFilterFactory extends
                 String token = authHeader.substring(7).trim();
 
                 try{
-                    log.info("Before JWT service");
+//                    log.info("Before JWT service");
 
                     Long userId = jwtService.getUserIdFromToken(token);
 
-                    log.info("After JWT service");
+//                    log.info("After JWT service");
 
                     log.info("Jwt token valid for path: {}",exchange.getRequest().getURI().getPath());
 
