@@ -1,5 +1,6 @@
 package com.example.linkedInProject.connection_service.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
@@ -8,6 +9,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 
 @Node
 @Getter @Setter
+@Builder
 public class Person {
 
     @Id
