@@ -19,6 +19,7 @@ public class UserServiceConsumer {
     public void handlePersonCreated(UserCreatedEvent userCreatedEvent){
         log.info("handlePersonCreated: {}",userCreatedEvent);
         personService.createPersonNode(userCreatedEvent.getUserId(),userCreatedEvent.getName());
-
     }
+
+
 }

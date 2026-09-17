@@ -1,5 +1,6 @@
 package com.example.linkedInProject.connection_service.controller;
 
+import com.example.linkedInProject.connection_service.dto.PersonDto;
 import com.example.linkedInProject.connection_service.entity.Person;
 import com.example.linkedInProject.connection_service.service.ConnectionService;
 import lombok.RequiredArgsConstructor;
@@ -18,23 +19,40 @@ public class ConnectionController {
     private final ConnectionService connectionService;
 
     @GetMapping("/{userid}/first-degree")
-    public ResponseEntity<List<Person>> getFirstDegreeConnections(@PathVariable("userid") Long userId,
-                                                                  @RequestHeader("X-User-Id") Long userIdFromHeader){
+    public ResponseEntity<List<PersonDto>> getFirstDegreeConnections(@PathVariable("userid") Long userId,
+                                                                     @RequestHeader("X-User-Id") Long userIdFromHeader){
         log.info("User id is: {}",userId);
         log.info("User id from request headers is: {}",userIdFromHeader);
         return ResponseEntity.ok(connectionService.getFirstDegreeConnections(userId));
     }
 
     @GetMapping("/{userid}/second-degree")
-    public ResponseEntity<List<Person>> getSecondDegreeConnections(@PathVariable("userid") Long userId){
-        log.info("User id is: {}",userId);
+    public ResponseEntity<List<PersonDto>> getSecondDegreeConnections(@PathVariable("userid") Long userId){
         return ResponseEntity.ok(connectionService.getSecondDegreeConnections(userId));
     }
 
     @GetMapping("/{userid}/third-degree")
-    public ResponseEntity<List<Person>> getThirdDegreeConnections(@PathVariable("userid") Long userId){
-        log.info("User id is: {}",userId);
+    public ResponseEntity<List<PersonDto>> getThirdDegreeConnections(@PathVariable("userid") Long userId){
         return ResponseEntity.ok(connectionService.getThirdDegreeConnections(userId));
     }
+
+    @PostMapping("/request/{userid}")
+    public ResponseEntity<Void> sendConnectionRequest(@PathVariable(name = "userid") Long userId){
+        connectionService.sendConnectionRequest(userId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/accept/{userid}")
+    public ResponseEntity<Void> acceptConnectionRequest(@PathVariable(name = "userid") Long userId){
+        connectionService.acceptConnectionRequest(userId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/reject/{userid}")
+    public ResponseEntity<Void> rejectConnectionRequest(@PathVariable(name = "userid") Long userId){
+        connectionService.rejectConnectionRequest(userId);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
