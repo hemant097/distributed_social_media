@@ -1,11 +1,11 @@
-package com.example.linkedInProject.connection_service.service;
+package com.example.linkedInProject.connection_service.service.impl;
 
 import com.example.linkedInProject.connection_service.auth.AuthContextHolder;
 import com.example.linkedInProject.connection_service.dto.PersonDto;
-import com.example.linkedInProject.connection_service.entity.Person;
 import com.example.linkedInProject.connection_service.event.ConnectionRequestEvent;
 import com.example.linkedInProject.connection_service.event.RequestStatus;
 import com.example.linkedInProject.connection_service.repository.PersonRepository;
+import com.example.linkedInProject.connection_service.service.ConnectionService;
 import jakarta.ws.rs.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

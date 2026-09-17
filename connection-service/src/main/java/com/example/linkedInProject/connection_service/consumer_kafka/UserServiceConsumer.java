@@ -1,4 +1,4 @@
-package com.example.linkedInProject.connection_service.consumer;
+package com.example.linkedInProject.connection_service.consumer_kafka;
 
 import com.example.linkedInProject.connection_service.service.PersonService;
 import com.example.linkedInProject.user_service.event.UserCreatedEvent;

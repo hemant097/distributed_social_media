@@ -1,4 +1,4 @@
-package com.example.linkedInProject.notification_service.consumer;
+package com.example.linkedInProject.notification_service.consumer_kafka;
 
 import com.example.linkedInProject.notification_service.entity.Notification;
 import com.example.linkedInProject.notification_service.service.NotificationService;

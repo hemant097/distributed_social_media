@@ -1,7 +1,8 @@
-package com.example.linkedInProject.connection_service.service;
+package com.example.linkedInProject.connection_service.service.impl;
 
 import com.example.linkedInProject.connection_service.entity.Person;
 import com.example.linkedInProject.connection_service.repository.PersonRepository;
+import com.example.linkedInProject.connection_service.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class PersonServiceImpl implements PersonService{
+public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepo;
 

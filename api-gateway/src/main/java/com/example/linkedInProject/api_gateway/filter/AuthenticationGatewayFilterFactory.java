@@ -97,6 +97,7 @@ public class AuthenticationGatewayFilterFactory extends
     public static class Config{
     }
 
+    //custom method for writing error response
     private Mono<Void> writeErrorResponse(ServerWebExchange exchange, HttpStatus status, String message) {
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(status);
