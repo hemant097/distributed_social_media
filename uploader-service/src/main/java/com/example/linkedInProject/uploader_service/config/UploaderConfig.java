@@ -37,6 +37,7 @@ public class UploaderConfig {
     @Value("${gcloud.storage-access-key}")
     private String gcloudAccessKey;
 
+    //creating Storage object with the service account credentials
     @Bean
     public Storage gcpStorage() throws IOException{
         return StorageOptions.newBuilder()

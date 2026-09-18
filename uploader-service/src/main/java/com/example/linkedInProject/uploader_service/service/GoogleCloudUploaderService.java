@@ -1,5 +1,6 @@
 package com.example.linkedInProject.uploader_service.service;
 
+import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +24,21 @@ public class GoogleCloudUploaderService implements UploaderService {
 
     @Override
     public String uploadFile(MultipartFile file) {
+
         log.info("Trying to upload a file named: {}, with approx. size : {} KiB",file.getOriginalFilename(), file.getSize()/1024);
+
         String fileName = UUID.randomUUID()+"-"+file.getOriginalFilename().replace(" ","_");
-        BlobInfo blobInfo = BlobInfo.newBuilder(bucketName,fileName).build();
+        String contentType = file.getContentType();
+
+//        BlobId blobId = BlobId.of(bucketName, fileName);
+//        BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+//                .setContentType(contentType)
+//                .build();
+
+        //combining the above 2 steps into one
+        BlobInfo blobInfo = BlobInfo.newBuilder(bucketName,fileName)
+                .setContentType(contentType) //adding the content type helps when we want to download/view the file
+                .build();
 
         try {
             googleCloudStorage.create(blobInfo,file.getBytes());

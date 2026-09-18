@@ -5,3 +5,4 @@ A microservice based project inspired by the functionalities of LinkedIn
 3. user-service
 4. connection-service
 5. uploader-service
+6. api-gateway
