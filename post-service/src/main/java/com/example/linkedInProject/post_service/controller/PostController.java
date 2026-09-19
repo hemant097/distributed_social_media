@@ -6,8 +6,10 @@ import com.example.linkedInProject.post_service.dto.PostDto;
 import com.example.linkedInProject.post_service.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,10 +20,10 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping
-    public ResponseEntity<PostDto> createPost(@RequestBody PostCreateRequestDto postCreateRequestDto){
-        Long currentUserId = AuthContextHolder.getCurrentUserId();
-        PostDto postDto = postService.createPost(postCreateRequestDto,currentUserId);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PostDto> createPost(@RequestPart("post") PostCreateRequestDto postCreateRequestDto,
+                                              @RequestPart("file") MultipartFile fileToUpload){
+        PostDto postDto = postService.createPost(postCreateRequestDto,fileToUpload);
         return new ResponseEntity<>(postDto, HttpStatus.CREATED);
     }
 

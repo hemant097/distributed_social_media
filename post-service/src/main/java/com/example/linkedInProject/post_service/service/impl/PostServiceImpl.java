@@ -1,6 +1,8 @@
 package com.example.linkedInProject.post_service.service.impl;
 
+import com.example.linkedInProject.post_service.auth.AuthContextHolder;
 import com.example.linkedInProject.post_service.client.ConnectionServiceClient;
+import com.example.linkedInProject.post_service.client.UploaderServiceClient;
 import com.example.linkedInProject.post_service.dto.PersonDto;
 import com.example.linkedInProject.post_service.dto.PostCreateRequestDto;
 import com.example.linkedInProject.post_service.dto.PostDto;
@@ -12,8 +14,10 @@ import com.example.linkedInProject.post_service.repository.PostRepository;
 import com.example.linkedInProject.post_service.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,12 +30,18 @@ public class PostServiceImpl implements PostService {
     private final PostMapper postMapper;
     private final ConnectionServiceClient connectionClient;
     private final KafkaTemplate<Long, PostCreatedEvent> postCreatedKafkaTemplate;
+    private final UploaderServiceClient uploaderServiceClient;
 
     @Override
-    public PostDto createPost(PostCreateRequestDto postCreateRequestDto,Long userId) {
+    public PostDto createPost(PostCreateRequestDto postCreateRequestDto, MultipartFile fileToUpload) {
+        Long userId = AuthContextHolder.getCurrentUserId();
         log.info("Creating post for user with id: {}",userId);
+
+        ResponseEntity<String> imageUrl = uploaderServiceClient.uploadFile(fileToUpload);
+
         Post post = postMapper.toPost(postCreateRequestDto);
         post.setUserId(userId);
+        post.setImageUrl(imageUrl.getBody());
         post = postRepo.save(post);
 
         List<PersonDto> personDtoList = connectionClient.getFirstDegreeConnections(userId);
