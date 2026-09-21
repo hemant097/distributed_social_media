@@ -143,7 +143,7 @@
 				<version>3.5.2</version>
 				<configuration>
 					<to>
-						<image>docker.io/noviceanemone/social-media-${project.artifactId}:${project.version}</image>
+						<image>docker.io/noviceanemone/social-${project.artifactId}:${project.version}</image>
 						<tags>
 							<tag>
 								latest

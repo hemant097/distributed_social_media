@@ -1,4 +1,22 @@
+server:
+  port: 9030
+  servlet:
+    context-path: /connections
+
 spring:
+  application:
+    name: connection-service
+
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: password
+  data:
+    neo4j:
+      database: linkedin-graph
+
+
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
@@ -15,5 +33,47 @@ spring:
       properties:
         spring.json:
           trusted.packages: com.example.linkedInProject.*
+
+
+#management:
+#  health:
+#    neo4j.enabled: false
+
+---
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info"
+
+spring:
+  config:
+    activate:
+      on-profile: k8s
+
+
+  neo4j:
+    uri: bolt://${NEO4J_INSTANCE_NAME}:7687
+    authentication:
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
+  data:
+    neo4j:
+      database: ${DB_NAME}
+
+  kafka:
+    bootstrap-servers: kafka:9092
+
+
+
+
+
+
 
 

@@ -17,14 +17,14 @@ spring:
         webflux:
           routes:
             - id: user-service
-              uri: lb://USER-SERVICE
+              uri: ${USER_SERVICE_URI:lb://USER-SERVICE}
               predicates:
                 - Path=/api/v1/users/**
               filters:
                 - StripPrefix=2 #removes the api/v1 from the path, and request is then handled by order-service
 
             - id: post-service
-              uri: lb://POST-SERVICE
+              uri: ${POST_SERVICE_URI:lb://POST-SERVICE}
               predicates:
                 - Path=/api/v1/posts/**
               filters:
@@ -32,7 +32,7 @@ spring:
                 - name: Authentication
 
             - id: connection-service
-              uri: lb://CONNECTION-SERVICE
+              uri: ${CONNECTION_SERVICE_URI:lb://CONNECTION-SERVICE}
               predicates:
                 - Path=/api/v1/connections/**
               filters:
@@ -40,7 +40,7 @@ spring:
                 - name: Authentication
 
             - id: uploader-service
-              uri: lb://UPLOADER-SERVICE
+              uri: ${UPLOADER_SERVICE_URI:lb://UPLOADER-SERVICE}
               predicates:
                 - Path=/api/v1/uploads/**
               filters:
@@ -53,4 +53,27 @@ jwt:
   secretKey : haofhalf90702u5*&^(*&)nkdjabfkidabfdv141845184ynjhvdjbfk1r4
 
 
+---
 
+spring:
+  config:
+    activate:
+      on-profile: k8s
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+
+USER_SERVICE_URI: http://user-service
+CONNECTION_SERVICE_URI: http://connection-service
+POST_SERVICE_URI: http://post-service
+UPLOADER_SERVICE_URI: http://uploader-service
+NOTIFICATION_SERVICE_URI: http://notification-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info"

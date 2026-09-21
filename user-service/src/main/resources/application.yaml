@@ -1,4 +1,31 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+server:
+  port: 9020
+  servlet:
+    context-path: /users
+
 spring:
+  application:
+    name: user-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/social_userDB
+    username: postgres
+    password: root
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+
   kafka:
     bootstrap-servers: localhost:9092
     producer:
@@ -9,3 +36,25 @@ spring:
           trusted.packages: com.example.linkedInProject.*
 
 
+jwt.secretKey : haofhalf90702u5*&^(*&)nkdjabfkidabfdv141845184ynjhvdjbfk1r4
+
+---
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+
+spring:
+  config:
+    activate:
+      on-profile: k8s
+
+  datasource:
+    url: jdbc:postgresql://${DB_SERVER}:5432/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  kafka:
+    bootstrap-servers: kafka:9092

@@ -1,6 +1,6 @@
-package com.example.linkedInProject.uploader_service.service;
+package com.example.linkedInProject.uploader_service.service.impl;
 
-import com.google.cloud.storage.BlobId;
+import com.example.linkedInProject.uploader_service.service.UploaderService;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import lombok.RequiredArgsConstructor;

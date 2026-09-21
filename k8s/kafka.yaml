@@ -1,0 +1,107 @@
+#This YAML creates a 2-node Kafka cluster using a StatefulSet, which gives the pods stable names (kafka-0 and kafka-1) and stable identities 
+# (node.id 0 and 1). A headless Service named kafka gives those Pods predictable DNS names (kafka-0.kafka and kafka-1.kafka) so they can find each other. 
+# Each Pod runs Kafka, with port 9092 used for normal Kafka client traffic and port 29093 used for KRaft controller communication. 
+# The shell command sets Kafka's cluster ID, automatically derives each node's ID from its Pod name, tells Kafka the address clients should use, and defines 
+# the KRaft controller quorum. 
+# In short: StatefulSet creates stable Kafka nodes → Service gives them stable DNS → Kafka uses those identities and addresses to form a KRaft cluster.
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: kafka
+  name: kafka
+spec:
+  podManagementPolicy: Parallel
+  replicas: 2
+  selector:
+    matchLabels:
+      app: kafka
+  serviceName: kafka
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+      - name: kafka
+        image: docker.io/confluentinc/confluent-local:7.5.0
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: KAFKA_CONTROLLER_LISTENER_NAMES
+          value: "CONTROLLER"
+        - name: KAFKA_LISTENERS
+          value: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:29093
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        # the following command sets the KAFKA_NODE_ID and KAFKA_ADVERTISED_LISTENERS environment variables extracted from the POD_NAME and HOSTNAME (for kafka-0, it sets NODE_ID to 0)
+        # -exc flags: Tell the shell to exit immediately if any command fails (-e), print each command for debugging (-x), and execute the provided string (-c).
+        command:
+        - sh
+        - -exc
+        - |
+          export CLUSTER_ID="6PMpHYL9QkeyXRj9Nrp4KA" && \
+          export KAFKA_NODE_ID=${HOSTNAME##*-} 
+          export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_NAME}.kafka:9092
+          export KAFKA_CONTROLLER_QUORUM_VOTERS="0@kafka-0.kafka:29093,1@kafka-1.kafka:29093" 
+          exec /etc/confluent/docker/run
+        ports:
+        - containerPort: 9092
+          name: tcp-kafka-int
+          protocol: TCP
+        - containerPort: 29093
+          name: tcp-kafka-ctrl
+          protocol: TCP
+        resources:
+          limits:
+            cpu: "200m"
+            memory: 1Gi
+          requests:
+            cpu: 100m
+            memory: 512Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          # readOnlyRootFilesystem: true
+          runAsGroup: 1000
+          runAsUser: 1000
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/kafka
+          name: config
+      dnsPolicy: ClusterFirst
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 1000
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - emptyDir: {}
+        name: config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: kafka
+  name: kafka
+spec:
+  clusterIP: None
+  ports:
+  - name: tcp-kafka-int
+    port: 9092
+    protocol: TCP
+    targetPort: tcp-kafka-int
+  - name: tcp-kafka-ctrl
+    port: 29093
+    protocol: TCP
+    targetPort: tcp-kafka-ctrl
+  selector:
+    app: kafka
