@@ -43,7 +43,7 @@ public class PostLikeServiceImpl implements PostLikeService {
         postLikeRepo.save(postLike);
 
 
-        //TODO: send notification to the owner of the post
+        //sending notification to the owner of the post
 
         PostLikedEvent postLikedEvent = PostLikedEvent.builder()
                 .postId(postId)

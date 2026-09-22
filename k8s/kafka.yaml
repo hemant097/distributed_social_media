@@ -1,8 +1,7 @@
-#This YAML creates a 2-node Kafka cluster using a StatefulSet, which gives the pods stable names (kafka-0 and kafka-1) and stable identities 
-# (node.id 0 and 1). A headless Service named kafka gives those Pods predictable DNS names (kafka-0.kafka and kafka-1.kafka) so they can find each other. 
-# Each Pod runs Kafka, with port 9092 used for normal Kafka client traffic and port 29093 used for KRaft controller communication. 
-# The shell command sets Kafka's cluster ID, automatically derives each node's ID from its Pod name, tells Kafka the address clients should use, and defines 
-# the KRaft controller quorum. 
+#This YAML creates a 2-node Kafka cluster using a StatefulSet, which gives the pods stable names (kafka-0 and kafka-1) and stable identities (node.id 0 and 1). 
+# A headless Service named kafka gives those Pods predictable DNS names (kafka-0.kafka and kafka-1.kafka) so they can find each other. Each Pod runs Kafka, 
+# with port 9092 used for normal Kafka client traffic and port 29093 used for KRaft controller communication. The shell command sets Kafka's cluster ID, 
+# automatically derives each node's ID from its Pod name, tells Kafka the address clients should use, and defines the KRaft controller quorum. 
 # In short: StatefulSet creates stable Kafka nodes → Service gives them stable DNS → Kafka uses those identities and addresses to form a KRaft cluster.
 
 apiVersion: apps/v1
@@ -37,7 +36,7 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.name
-        # the following command sets the KAFKA_NODE_ID and KAFKA_ADVERTISED_LISTENERS environment variables extracted from the POD_NAME and HOSTNAME (for kafka-0, it sets NODE_ID to 0)
+        # the following command sets the KAFKA_NODE_ID and KAFKA_ADVERTISED_LISTENERS env. variables extracted from the POD_NAME and HOSTNAME (for kafka-0, it sets NODE_ID to 0)
         # -exc flags: Tell the shell to exit immediately if any command fails (-e), print each command for debugging (-x), and execute the provided string (-c).
         command:
         - sh

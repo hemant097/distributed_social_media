@@ -47,12 +47,11 @@ public class PostServiceImpl implements PostService {
         List<PersonDto> personDtoList = connectionClient.getFirstDegreeConnections(userId);
 
 
-
-        //sending notification to all the first degree connections
+        //sending notification to all the first degree connections, with first 10 characters of the post message
         for( PersonDto personDto : personDtoList){
             PostCreatedEvent postCreatedEvent = PostCreatedEvent.builder()
                     .postId(post.getId())
-                    .content(post.getContent())
+                    .content(post.getContent().substring(0,10) + " ...")
                     .userId(personDto.getUserId())
                     .ownerUserId(userId)
                     .build();
