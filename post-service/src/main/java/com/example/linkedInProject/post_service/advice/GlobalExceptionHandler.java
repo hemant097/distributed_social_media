@@ -21,22 +21,6 @@ public class GlobalExceptionHandler {
 
     }
 
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public ResponseEntity<APIError> validationErrors(MethodArgumentNotValidException manve) {
-//
-//        //getting all the binding errors from the exception and converting it to List<String> using stream
-//        List<String> errorList = manve.getBindingResult()
-//                .getAllErrors()
-//                .stream().map(error->error.getDefaultMessage())
-//                .collect(Collectors.toList());
-//
-//        APIError apiError = returnAPIError(manve,HttpStatus.BAD_REQUEST);
-//        apiError.setHttpStatus(HttpStatus.BAD_REQUEST);
-//        apiError.setSubErrors(errorList);
-//
-//        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
-//    }
-
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<APIError> internalServerError(Exception exception) {

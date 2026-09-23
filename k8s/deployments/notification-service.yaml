@@ -28,10 +28,13 @@ spec:
           value: user
         - name: DB_PASSWORD
           value: password
-        - name: DB_SERVER
-          value: notification-db
         - name: DB_NAME
           value: notificationDB
+        - name: DB_SERVER
+          valueFrom:
+            configMapKeyRef:
+              name: my-config
+              key: NOTIFICATION_DB_SERVICE
         ports:
         - containerPort: 9040
 

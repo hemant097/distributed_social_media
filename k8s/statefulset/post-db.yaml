@@ -25,16 +25,22 @@ spec:
               cpu: "100m"
           env:
             - name: POSTGRES_USER
-              value: user
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
-              value: password
-            - name: POSTGRES_DB
-              value: postDB
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: POSTGRES_PASSWORD
             - name: PGDATA
               valueFrom:
                 configMapKeyRef:
                   name: my-config
                   key: PG_DATA
+            - name: POSTGRES_DB
+              value: postDB
           ports:
             - containerPort: 5432
           volumeMounts:

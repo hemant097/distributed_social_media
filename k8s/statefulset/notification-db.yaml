@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: user-db
+  name: notification-db
 spec:
   selector:
     matchLabels:
-      app: user-db
-  serviceName: user-db
+      app: notification-db
+  serviceName: notification-db
   replicas: 1
   template:
     metadata:
       labels:
-        app: user-db
+        app: notification-db
     spec:
       containers:
-        - name: user-db
+        - name: notification-db
           image: postgres:18-trixie
           resources:
             limits:
@@ -25,16 +25,22 @@ spec:
               cpu: "100m"
           env:
             - name: POSTGRES_USER
-              value: user
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
-              value: password
-            - name: POSTGRES_DB
-              value: userDB
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: POSTGRES_PASSWORD
             - name: PGDATA
               valueFrom:
                 configMapKeyRef:
                   name: my-config
                   key: PG_DATA
+            - name: POSTGRES_DB
+              value: notificationDB
           ports:
             - containerPort: 5432
           volumeMounts:
@@ -56,13 +62,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: user-db
+  name: notification-db
 spec:
   clusterIP: None
   selector:
-    app: user-db
+    app: notification-db
   ports:
     - port: 5432
       targetPort: 5432
 
 
+      

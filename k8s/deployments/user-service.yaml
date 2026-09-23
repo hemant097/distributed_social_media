@@ -29,7 +29,10 @@ spec:
         - name: DB_PASSWORD
           value: password
         - name: DB_SERVER
-          value: user-db
+          valueFrom:
+            configMapKeyRef:
+              name: my-config
+              key: USER_DB_SERVICE
         - name: DB_NAME
           value: userDB
         ports:
