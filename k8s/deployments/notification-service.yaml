@@ -36,7 +36,7 @@ spec:
               name: my-config
               key: NOTIFICATION_DB_SERVICE
         ports:
-        - containerPort: 9040
+        - containerPort: 9060
 
 
 ---
@@ -49,5 +49,5 @@ spec:
     app: notification-service
   ports:
   - port: 80
-    targetPort: 9040
+    targetPort: 9060
 

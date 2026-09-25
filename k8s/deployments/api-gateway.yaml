@@ -28,7 +28,7 @@ spec:
           value: "k8s"
         startupProbe:
           httpGet:
-            path: /actuator/health/startup
+            path: /actuator/health
             port: 8080
           initialDelaySeconds: 5
           periodSeconds: 10
