@@ -34,6 +34,8 @@ spec:
             value: "0.0.0.0"
           - name: NEO4J_ACCEPT_LICENSE_AGREEMENT
             value: "yes"
+          - name: NEO4J_initial_dbms_default__database
+            value: "connectionDB"
         ports:
           - containerPort: 7687 #Bolt
         volumeMounts:

@@ -10,7 +10,7 @@ import com.example.linkedInProject.user_service.mapper.UserMapper;
 import com.example.linkedInProject.user_service.repository.UserRepository;
 import com.example.linkedInProject.user_service.service.AuthService;
 import com.example.linkedInProject.user_service.service.JWTService;
-import com.example.linkedInProject.user_service.util.BCrypt;
+import com.example.linkedInProject.user_service.util.BCryptPasswordHasher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -35,7 +35,7 @@ public class UserServiceImpl implements AuthService {
 
         User user = userMapper.toUser(signupRequest);
 
-        user.setPassword(BCrypt.hashString(signupRequest.getPassword()));
+        user.setPassword(BCryptPasswordHasher.hashString(signupRequest.getPassword()));
         user = userRepo.save(user);
 
         UserCreatedEvent userCreatedEvent = UserCreatedEvent.builder()
@@ -56,11 +56,12 @@ public class UserServiceImpl implements AuthService {
         User user = userRepo.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new BadRequestException("Incorrect credentials"));
 
-        boolean doesPasswordMatch = BCrypt.match(loginRequest.getPassword(), user.getPassword()); //user entity stores hashed pw in db
+        boolean doesPasswordMatch = BCryptPasswordHasher.match(loginRequest.getPassword(), user.getPassword()); //user entity stores hashed pw in db
 
         if(!doesPasswordMatch)
             throw new BadRequestException("Incorrect credentials");
 
+        log.info("Login successful with email: {}",loginRequest.getEmail());
         return jwtService.generateAccessToken(user);
     }
 

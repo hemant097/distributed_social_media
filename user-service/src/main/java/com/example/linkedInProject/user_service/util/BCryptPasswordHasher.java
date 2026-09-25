@@ -1,6 +1,6 @@
 package com.example.linkedInProject.user_service.util;
 
-public class BCrypt {
+public class BCryptPasswordHasher {
 
     public static String hashString(String str){
         return org.mindrot.jbcrypt.BCrypt.hashpw(str, org.mindrot.jbcrypt.BCrypt.gensalt());

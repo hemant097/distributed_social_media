@@ -16,6 +16,7 @@ spring:
       server:
         webflux:
           routes:
+            # user-service contains signup and login, which should be accessible by everyone, thus no authentication filter used
             - id: user-service
               uri: ${USER_SERVICE_URI:lb://USER-SERVICE}
               predicates:

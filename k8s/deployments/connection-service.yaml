@@ -15,12 +15,12 @@ spec:
       - name: connection-service
         image: noviceanemone/social-connection-service:latest
         resources:
-          limits:
-            memory: "400Mi"
-            cpu: "200m"
           requests:
-            memory: "200Mi"
+            memory: "256Mi"
             cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "250m"
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: "k8s"
